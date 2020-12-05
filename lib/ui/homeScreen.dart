@@ -1,17 +1,58 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gourmet_lounge/icons/navigationBarIcons.dart';
+import 'package:gourmet_lounge/services/authentication.dart';
 import 'package:gourmet_lounge/ui/inboxScreen.dart';
 import 'package:gourmet_lounge/ui/searchScreen.dart';
+import 'package:gourmet_lounge/ui/userProfileScreen.dart';
+import 'package:gourmet_lounge/widgets/constants.dart';
 import 'package:gourmet_lounge/widgets/customApplicationBar.dart';
+import 'package:gourmet_lounge/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:gourmet_lounge/routeGenerator.dart';
 
 import 'cards.dart';
+
+int _selectedItem = 0;
+final List pages = [
+  CardView(),
+  SearchScreen(),
+  null,
+  InboxScreen(),
+  UserProfileScreen()
+];
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: HomeInterface(),
+//      initialRoute: '/',
+//      onGenerateRoute: RouteGenerator.generateRoute,
     );
+  }
+}
+
+void choiceAction(String choice) async {
+  final AuthService _auth = AuthService();
+  if (choice == Constants.Logout) {
+    await _auth.logOut();
+  } else if (choice == Constants.Profile) {
+    BuildContext context;
+    MaterialApp(
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+    );
+
+    Navigator.of(_HomeInterfaceState().context).pushNamed('/myProfile');
+
+//    HomeScreen build(BuildContext context) {
+//      _selectedItem = 4;
+//      var page = pages[4];
+//      return page;
+//    }
+//    BuildContext context;
+//    UserProfileScreen().build(context);
   }
 }
 
@@ -21,8 +62,8 @@ class HomeInterface extends StatefulWidget {
 }
 
 class _HomeInterfaceState extends State<HomeInterface> {
-  int _selectedItem = 0;
-  final List pages = [CardView(), SearchScreen(), null, InboxScreen()];
+  //int _selectedItem = 0;
+  //final List pages = [CardView(), SearchScreen(), null, InboxScreen(), UserProfileScreen()];
   final List appBar = [
     //HOME APPBAR
     GLAppBar(
@@ -45,9 +86,16 @@ class _HomeInterfaceState extends State<HomeInterface> {
               ),
               Container(
                 child: IconButton(
-                  icon: Icon(Icons.account_circle, size: 36),
-                  color: Colors.white,
-                  onPressed: () {},
+                  icon: Icon(
+                    Icons.account_circle,
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+//                    BuildContext context;
+//                    Navigator.of(context).pushNamed('/myProfile');
+                    runApp(UserProfileScreen());
+                  },
                 ),
               ),
             ],
@@ -135,19 +183,22 @@ class _HomeInterfaceState extends State<HomeInterface> {
   ];
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: appBar[_selectedItem],
-        backgroundColor: Colors.white,
-        bottomNavigationBar: BottomNavigationBar(
-          onChange: (val) {
-            setState(() {
-              _selectedItem = val;
-            });
-          },
-          defaultSelectedIndex: 0,
+    return StreamProvider<QuerySnapshot>.value(
+      value: DatabaseService().users,
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: appBar[_selectedItem],
+          backgroundColor: Colors.white,
+          bottomNavigationBar: BottomNavigationBar(
+            onChange: (val) {
+              setState(() {
+                _selectedItem = val;
+              });
+            },
+            defaultSelectedIndex: 0,
+          ),
+          body: pages[_selectedItem],
         ),
-        body: pages[_selectedItem],
       ),
     );
   }

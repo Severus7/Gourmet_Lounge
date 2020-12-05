@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1058555183399",
+    "firebase_url": "https://fluttergourmetlounge.firebaseio.com",
+    "project_id": "fluttergourmetlounge",
+    "storage_bucket": "fluttergourmetlounge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058555183399:android:6cf9befd10a0307668a902",
+        "android_client_info": {
+          "package_name": "com.example.gourmet_lounge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058555183399-880nfb4qfms4b1dcaht5e3ccuk4ik45g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1xG6zv3lF3RlE5i5RHP9N364aLOusVqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058555183399-880nfb4qfms4b1dcaht5e3ccuk4ik45g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
